@@ -6,3 +6,9 @@ lazy val root = (project in file("."))
   .settings(
     name := "AnimeAnalysis"
   )
+
+
+libraryDependencies += "org.apache.spark" %% "spark-core" % "3.4.1"
+libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.4.1"
+libraryDependencies += "com.opencsv" % "opencsv" % "5.8"
+
