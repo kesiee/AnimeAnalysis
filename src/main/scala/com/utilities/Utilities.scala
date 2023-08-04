@@ -4,6 +4,8 @@ import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import org.apache.spark.sql.types._
 
 import java.io.FileReader
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
 import com.opencsv.CSVReader
 import scala.collection.JavaConverters.asScalaBufferConverter
 import scala.collection.mutable
@@ -23,25 +25,38 @@ object Utilities {
       myEntries.asScala
     }
 
-    //This is used to fix the datatype that the column is defined in the schema.
-    //This way you don't to lose the data.
-    def typefix(array: Array[String], schema: StructType): Row = {
-      val rowSeq: Seq[Any] = array.zip(schema.fields).map { case (value, field) =>
-        field.dataType match {
-          case IntegerType => if (value!="UNKNOWN") value.toInt else 0
-          case DoubleType => if (value!="UNKNOWN") value.toDouble else 0.0
-          case _ => value
-        }
+    def typefix(array: Array[String], schema: StructType): Option[Row] = {
+      if (array.length != schema.length) {
+        return None // Skip this row if the lengths don't match
       }
-      Row.fromSeq(rowSeq)
+      else {
+        val format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
+        val rowSeq: Seq[Any] = array.zip(schema.fields).map { case (value, field) =>
+          try {
+            field.dataType match {
+              case IntegerType => if (value != "UNKNOWN" && value.nonEmpty) value.toInt else 0
+              case DoubleType => if (value != "UNKNOWN" && value.nonEmpty) value.toDouble else 0.0
+              case TimestampType => if (value != "UNKNOWN" && value.nonEmpty) new Timestamp(format.parse(value).getTime) else null
+              case _ => value
+            }
+          } catch {
+            case _: Exception => null // Return null for this field if there's an exception
+          }
+        }
+        Some(Row.fromSeq(rowSeq))
+      }
     }
 
     val rdd = spark.sparkContext.parallelize(opencsv_entries())
     val header = rdd.first() //done to remove the header cause it contains the column names.
     val data = rdd.filter(row => !(row sameElements header))
 
-    val rowRDD = data.map(array => typefix(array, schema))
+    val rowRDD = data.flatMap(array => typefix(array, schema)) // Use flatMap to filter out None values
     spark.createDataFrame(rowRDD, schema)
+  }
+
+  def write_parque(df:DataFrame,path:String):Unit={
+    df.write.mode("overwrite").option("maxRowsInMemory", 1000).parquet(path)
 
   }
 
