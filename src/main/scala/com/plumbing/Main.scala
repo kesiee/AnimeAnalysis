@@ -8,14 +8,19 @@ import org.apache.spark.sql.SparkSession
 object Main {
 
   val conf = new SparkConf()
-    .setMaster("local[2]")
+    .setMaster("local[6]")
     .setAppName("Anime_Analysis")
+    .set("spark.executor.memory", "8g")
+    .set("spark.driver.memory", "4g")
+    .set("spark.memory.offHeap.enabled", "true")
+    .set("spark.memory.offHeap.size", "4g")
     .set("spark.sql.parquet.int96RebaseModeInWrite", "LEGACY")
 
   implicit val spark = new SparkSession
-    .Builder()
+  .Builder()
     .config(conf)
     .getOrCreate()
+
 
   def main(args:Array[String]):Unit={
 

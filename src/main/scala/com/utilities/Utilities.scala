@@ -16,7 +16,6 @@ object Utilities {
   //The data bleeds into other rows even with multiline enabled cause of
   // the Synopsis column which contains large Strings with escape chars, newline etc
   def load_csv(path: String, schema: StructType)(implicit spark: SparkSession): DataFrame = {
-
     //This reads the csv as a table of Strings and outs as a Java linked list
     //hence has to be converted to Scala Buffer.
     def opencsv_entries(): mutable.Buffer[Array[String]] = {
@@ -24,7 +23,6 @@ object Utilities {
       val myEntries = reader.readAll()
       myEntries.asScala
     }
-
     def typefix(array: Array[String], schema: StructType): Option[Row] = {
       if (array.length != schema.length) {
         return None // Skip this row if the lengths don't match
