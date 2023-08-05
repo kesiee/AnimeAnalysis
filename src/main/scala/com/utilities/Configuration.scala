@@ -10,4 +10,8 @@ object Configuration {
 
   val clean_write_path="/home/shashank/DATA/Anime_2023/clean/"
 
+  val anime_dataset_clean=clean_write_path+ "anime_dataset/*.parquet"
+  val user_details_clean=clean_write_path+ "user_details/*.parquet"
+  val user_score_clean=clean_write_path+ "user_score/*/*.parquet"
+
 }

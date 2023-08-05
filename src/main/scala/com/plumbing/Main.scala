@@ -1,10 +1,12 @@
 package com.plumbing
 
-import com.utilities.Configuration.{anime_dataset_path, user_details_path, user_score_path}
-import com.utilities.Structures.{anime_dataset_schema, user_details_schema, user_score_schema}
-import com.utilities.Utilities.load_csv
+import com.utilities.Configuration.{anime_dataset_clean, user_details_clean, user_score_clean}
+
+import com.utilities.Utilities.{read_parquet}
+
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
+
 object Main {
 
   val conf = new SparkConf()
@@ -23,6 +25,11 @@ object Main {
 
 
   def main(args:Array[String]):Unit={
+
+
+    val anime_dataset_df=read_parquet(anime_dataset_clean)
+    val user_details_df=read_parquet(user_details_clean)
+    val user_score_df=read_parquet(user_score_clean)
 
   }
 }

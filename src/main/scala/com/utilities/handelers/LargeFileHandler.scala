@@ -1,8 +1,8 @@
-package com.utilities
+package com.utilities.handelers
 
 import java.io.{BufferedWriter, FileWriter}
 
-object LargFileHandler {
+object LargeFileHandler {
 
   def split_csv(path: String, saveDir: String) = {
 
@@ -14,7 +14,7 @@ object LargFileHandler {
     var writer: BufferedWriter = new BufferedWriter(new FileWriter(s"$saveDir"+s"split/smallFile$fileCount.csv"))
 
     for (line <- lines) {
-      if (lineCount < 1000000) { // Adjust this number based on how many lines you want in each small file
+      if (lineCount < 2500000) { // Adjust this number based on how many lines you want in each small file
         writer.write(line)
         writer.newLine()
         lineCount += 1
