@@ -25,7 +25,7 @@ object CsvHandler {
     }
     def typefix(array: Array[String], schema: StructType): Option[Row] = {
       if (array.length != schema.length) {
-        return None // Skip this row if the lengths don't match
+        None // Skip this row if the lengths don't match
       }
       else {
         val format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")

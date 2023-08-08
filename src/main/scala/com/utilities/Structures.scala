@@ -1,10 +1,12 @@
 package com.utilities
 
 import org.apache.spark.sql.Encoders
+import org.apache.spark.sql.types.StructType
+
 import java.sql.Timestamp
 
 object Structures {
-  case class Anime_Dataset(anime_id: Int,
+  private case class Anime_Dataset(anime_id: Int,
                            Name: String,
                            English_name: String,
                            Other_name: String,
@@ -29,7 +31,7 @@ object Structures {
                            Members: Double,
                            Image_Url: String)
 
-  case class User_Details(User_ID: Int,
+  private case class User_Details(User_ID: Int,
                           Username: String,
                           Gender: String,
                           Birthday: Timestamp,
@@ -46,15 +48,15 @@ object Structures {
                           Rewatched: Double,
                           Episodes_Watched: Double)
 
-  case class User_Score(User_ID: Int,
+  private case class User_Score(User_ID: Int,
                         Username: String,
                         anime_id: Int,
                         Name: String,
                         Rating: Int)
 
-  val anime_dataset_schema = Encoders.product[Anime_Dataset].schema
-  val user_details_schema = Encoders.product[User_Details].schema
-  val user_score_schema=Encoders.product[User_Score].schema
+  val anime_dataset_schema: StructType = Encoders.product[Anime_Dataset].schema
+  val user_details_schema: StructType = Encoders.product[User_Details].schema
+  val user_score_schema: StructType = Encoders.product[User_Score].schema
 
 
 }

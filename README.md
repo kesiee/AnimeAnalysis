@@ -1,6 +1,6 @@
 # Anime Analysis 2023
 
-This project is designed to process and analyze a large dataset of anime data using Apache Spark. The data is sourced from [MyAnimeList Dataset](https://www.kaggle.com/datasets/dbdmobile/myanimelist-dataset) on Kaggle.
+This project is designed to process and analyze a large dataset of anime data using Apache Spark. The data is sourced from [Anime Dataset 2023](https://www.kaggle.com/datasets/dbdmobile/myanimelist-dataset) on Kaggle.
 
 ## Dataset
 
